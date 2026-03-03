@@ -20,39 +20,37 @@ class GrafListaSasiadow:
         self.adj_list.setdefault(v, []).append((u, waga))
 
     def wyswietl(self):
-        for wiersz in self.adj_list:
-            print(f"{wiersz} -> {self.adj_list[wiersz]}")
+        for wierzcholek in self.adj_list:
+            print(f"{wierzcholek} -> {self.adj_list[wierzcholek]}")
 
 
 class GrafDwochTablic:
-    def __init__(self):
-        self.wierzcholki = []
-        self.sasiedzi = []
+    def __init__(self, n):
+        self.wierzcholki = list(range(n))
+        self.sasiedzi = [[] for _ in range(n)]
 
-    def dodaj_krawedz(self, u, v, waga):
-        if u not in self.wierzcholki:
-            self.wierzcholki.append(u)
-            self.sasiedzi.append([])
-        if v not in self.wierzcholki:
-            self.wierzcholki.append(v)
-            self.sasiedzi.append([])
-
-        self.sasiedzi[self.wierzcholki.index(u)].append((v, waga))
-        self.sasiedzi[self.wierzcholki.index(v)].append((u, waga))
+    def dodaj_krawedz(self, u, v, waga=1):
+        self.sasiedzi[u].append((v, waga))
 
     def wyswietl(self):
         for i in range(len(self.wierzcholki)):
             print(f"{self.wierzcholki[i]} -> {self.sasiedzi[i]}")
+
+    def sasiedzi_wierzcholka(self, v):
+        if 0 <= v < len(self.sasiedzi):
+            return self.sasiedzi[v]
+        return []
 
 
 n, m = map(int, input().split())
 
 g1 = GrafMacierzSasiedztwa(n)
 g2 = GrafListaSasiadow()
-g3 = GrafDwochTablic()
+g3 = GrafDwochTablic(n)  # <- zmiana: podajemy n
 
 for _ in range(m):
     u, v, waga = map(int, input().split())
+
     g1.dodaj_krawedz(u, v, waga)
     g2.dodaj_krawedz(u, v, waga)
     g3.dodaj_krawedz(u, v, waga)
